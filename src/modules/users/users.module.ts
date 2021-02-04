@@ -1,26 +1,22 @@
 import { Module } from '@nestjs/common';
-import { BooksController } from './books.controller';
-import { IdGenerator, UuidGenerator } from 'src/shared';
-import { CommandHandlers } from './commands';
-import { QueryHandlers } from './queries';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UserRepositoryMemoryAdapter } from './repository/adapters/user.repository.memory';
-import { UserRepository } from './repository/user.repository';
-
+import { UsersController } from './interface/users.controller';
+import { CommandHandlers } from './application/commands';
+import { EventHandlers } from './application/events';
+import { IUserRepository } from './domain/user.repository';
+import { QueryHandlers } from './application/queries';
+import { UserRepositoryMemory } from './implementation/repositories/memory/user.repository.memory';
 @Module({
   imports: [CqrsModule],
-  controllers: [BooksController],
+  controllers: [UsersController],
   providers: [
     {
-      provide: IdGenerator,
-      useClass: UuidGenerator,
-    },
-    {
-      provide: UserRepository,
-      useClass: UserRepositoryMemoryAdapter,
+      provide: IUserRepository,
+      useClass: UserRepositoryMemory,
     },
     ...CommandHandlers,
     ...QueryHandlers,
+    ...EventHandlers,
   ],
 })
 export class UsersModule {}

@@ -1,24 +1,25 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user.command';
-import { UserRepository } from '../../repository/user.repository';
-import { IdGenerator } from 'src/shared';
+import { IUserRepository } from '../../../domain/user.repository';
+import { UserFactory } from 'src/modules/users/implementation/factories/user.factory';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
-    private idGenerator: IdGenerator,
-    private repository: UserRepository,
+    private factory: UserFactory,
+    private repository: IUserRepository,
     private publisher: EventPublisher,
   ) {}
 
-  async execute(command: CreateUserCommand, resolve: (value?) => void) {
+  async execute(command: CreateUserCommand): Promise<void> {
     const { payload } = command;
-    const id = this.idGenerator.generateId();
     const user = this.publisher.mergeObjectContext(
-      await this.repository.createUser(id, payload),
+      this.factory.create(payload),
     );
 
+    await this.repository.save(user);
+
+    user.raiseCreateUser();
     user.commit();
-    resolve();
   }
 }
