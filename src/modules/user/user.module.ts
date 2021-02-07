@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UsersController } from './interface/users.controller';
+import { UserController } from './interface/user.controller';
 import { CommandHandlers } from './application/commands';
 import { EventHandlers } from './application/events';
-import { UserRepository } from './domain/user.repository';
 import { QueryHandlers } from './application/queries';
-import { UserRepositoryMemory } from './infrastructure/memory/user.repository';
+import { UserRepositoryTypeORM } from './infrastructure/typeorm/user.repository';
+import { UserFactory } from './domain/users.factory';
+import { UserMapperTypeORM } from './infrastructure/typeorm/user.mapper';
+
 @Module({
   imports: [CqrsModule],
-  controllers: [UsersController],
+  controllers: [UserController],
   providers: [
-    {
-      provide: IUserRepository,
-      useClass: UserRepositoryMemory,
-    },
+    UserFactory,
+    UserMapperTypeORM,
+    UserRepositoryTypeORM,
+    UserController,
     ...CommandHandlers,
     ...QueryHandlers,
     ...EventHandlers,

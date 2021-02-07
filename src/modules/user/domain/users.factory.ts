@@ -13,6 +13,7 @@ interface CreateUserProps {
 export class UserFactory implements Factory<User, AnemicUser> {
   create(props: CreateUserProps): User {
     const now = new Date();
+
     return new User({
       id: props.id,
       email: props.email,
@@ -20,7 +21,9 @@ export class UserFactory implements Factory<User, AnemicUser> {
       lastName: props.lastName,
       createdAt: now,
       updatedAt: now,
-      password: UserPassword.create(props.password),
+      password: UserPassword.create({
+        value: props.password,
+      }),
     });
   }
 
@@ -32,7 +35,9 @@ export class UserFactory implements Factory<User, AnemicUser> {
       lastName: anemic.lastName,
       createdAt: anemic.createdAt,
       updatedAt: anemic.updatedAt,
-      password: UserPassword.create(anemic.password),
+      password: UserPassword.create({
+        value: anemic.password,
+      }),
     });
   }
 }

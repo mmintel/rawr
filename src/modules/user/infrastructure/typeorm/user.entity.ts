@@ -1,3 +1,4 @@
+import { User } from 'src/modules/user/domain/user.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -7,7 +8,11 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserEntityTypeORM {
+  constructor(user: User) {
+    Object.assign(this, user);
+  }
+
   @PrimaryGeneratedColumn()
   id: string;
 

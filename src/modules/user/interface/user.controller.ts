@@ -10,12 +10,12 @@ import {
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { UsersService } from './users.service';
+import { UserApplicationService } from '../application/services/user.service';
 
 @Controller('users')
 @ApiTags('Users')
-export class UsersController {
-  constructor(private readonly service: UsersService) {}
+export class UserController {
+  constructor(private readonly service: UserApplicationService) {}
 
   @ApiOperation({ description: 'Create User' })
   @ApiResponse({ status: 200, description: 'Create User.' })

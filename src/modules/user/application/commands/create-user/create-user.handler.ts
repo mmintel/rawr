@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user.command';
 import { UserRepository } from '../../../domain/user.repository';
-import { UserFactory } from 'src/modules/users/domain/factories/user.factory';
+import { UserFactory } from 'src/modules/user/infrastructure/typeorm/factories/user.factory';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
