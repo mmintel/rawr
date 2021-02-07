@@ -3,10 +3,12 @@ import { User } from 'src/modules/user/domain/user.entity';
 import { UserMapper } from '../../domain/user.mapper';
 import { UserEntityMemory } from './user.entity';
 
-export class UserRepositoryMemory implements UserRepository {
+export class UserRepositoryMemory extends UserRepository {
   private users: UserEntityMemory[] = [];
 
-  constructor(private userMapper: UserMapper<UserEntityMemory>) {}
+  constructor(private userMapper: UserMapper<UserEntityMemory>) {
+    super();
+  }
 
   async findOneById(id: string): Promise<User> {
     const user = this.users.find((user) => user.id === id);

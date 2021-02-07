@@ -7,15 +7,25 @@ import { QueryHandlers } from './application/queries';
 import { UserRepositoryTypeORM } from './infrastructure/typeorm/user.repository';
 import { UserFactory } from './domain/users.factory';
 import { UserMapperTypeORM } from './infrastructure/typeorm/user.mapper';
+import { UserApplicationService } from './application/services/user.service';
+import { UserRepository } from './domain/user.repository';
+import { UserMapper } from './domain/user.mapper';
 
 @Module({
   imports: [CqrsModule],
   controllers: [UserController],
   providers: [
+    {
+      provide: UserRepository,
+      useClass: UserRepositoryTypeORM,
+    },
+    {
+      provide: UserMapper,
+      useClass: UserMapperTypeORM,
+    },
     UserFactory,
-    UserMapperTypeORM,
-    UserRepositoryTypeORM,
     UserController,
+    UserApplicationService,
     ...CommandHandlers,
     ...QueryHandlers,
     ...EventHandlers,

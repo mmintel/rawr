@@ -1,9 +1,9 @@
 import { Factory } from 'src/core/factory';
+import { IdGenerator } from 'src/shared/ports/id-generator';
 import { UserPassword } from './user-password.value-object';
 import { AnemicUser, User } from './user.entity';
 
 interface CreateUserProps {
-  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -11,11 +11,13 @@ interface CreateUserProps {
 }
 
 export class UserFactory implements Factory<User, AnemicUser> {
+  constructor(private idGenerator: IdGenerator) {}
+
   create(props: CreateUserProps): User {
     const now = new Date();
 
     return new User({
-      id: props.id,
+      id: this.idGenerator.generateId(),
       email: props.email,
       firstName: props.firstName,
       lastName: props.lastName,

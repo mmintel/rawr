@@ -1,14 +1,15 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
 import { User } from 'src/modules/user/domain/user.entity';
-import { UserMapper } from 'src/modules/user/domain/user.mapper';
 import { UserRepository } from '../../domain/user.repository';
 import { UserEntityTypeORM } from './user.entity';
+import { UserMapper } from '../../domain/user.mapper';
 
 @EntityRepository(UserEntityTypeORM)
-export class UserRepositoryTypeORM implements UserRepository {
+export class UserRepositoryTypeORM extends UserRepository {
   private repository: Repository<UserEntityTypeORM>;
 
   constructor(private userMapper: UserMapper<UserEntityTypeORM>) {
+    super();
     this.repository = getRepository<UserEntityTypeORM>(UserEntityTypeORM);
   }
 
