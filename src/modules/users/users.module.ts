@@ -3,9 +3,9 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { UsersController } from './interface/users.controller';
 import { CommandHandlers } from './application/commands';
 import { EventHandlers } from './application/events';
-import { IUserRepository } from './domain/user.repository';
+import { UserRepository } from './domain/user.repository';
 import { QueryHandlers } from './application/queries';
-import { UserRepositoryMemory } from './implementation/repositories/memory/user.repository.memory';
+import { UserRepositoryMemory } from './infrastructure/memory/user.repository';
 @Module({
   imports: [CqrsModule],
   controllers: [UsersController],

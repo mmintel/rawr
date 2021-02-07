@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ICreateUserDTO } from '../../domain/dto/create-user.dto';
 
-export class CreateUserDto implements ICreateUserDTO {
+export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   firstName: string;

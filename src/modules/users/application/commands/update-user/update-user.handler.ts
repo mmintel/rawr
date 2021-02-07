@@ -1,12 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserCommand } from './update-user.command';
-import { IUserRepository } from '../../../domain/user.repository';
+import { UserRepository } from '../../../domain/user.repository';
 import { NotFoundException } from '@nestjs/common';
 
 @CommandHandler(UpdateUserCommand)
 export class CreateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
-    private repository: IUserRepository,
+    private repository: UserRepository,
     private publisher: EventPublisher,
   ) {}
 

@@ -1,11 +1,9 @@
-import { IUpdateUserDTO } from './dto/update-user.dto';
-import { IUser } from './user.entity';
+import { User } from './user.entity';
 
-export abstract class IUserRepository {
-  abstract findOneById(id: string): Promise<IUser>;
-  abstract findAll(): Promise<IUser[]>;
+export interface UserRepository {
+  findOneById(id: string): Promise<User>;
+  findAll(): Promise<User[]>;
 
-  abstract save(user: IUser): Promise<void>;
-  abstract delete(id: string): Promise<void>;
-  abstract update(id: string, payload: IUpdateUserDTO): Promise<void>;
+  save(user: User): Promise<void>;
+  delete(id: string): Promise<void>;
 }

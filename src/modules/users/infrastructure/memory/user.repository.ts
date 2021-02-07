@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../../domain/user.repository';
+import { UserRepository } from '../../domain/user.repository';
 import { IUser } from 'src/modules/users/domain/user.entity';
 import { IUpdateUserDTO } from 'src/modules/users/domain/dto/update-user.dto';
 
