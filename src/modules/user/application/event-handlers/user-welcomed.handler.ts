@@ -1,5 +1,5 @@
 import { IEventHandler, EventsHandler } from '@nestjs/cqrs';
-import { UserWelcomedEvent } from '../../../domain/events/user-welcomed.event';
+import { UserWelcomedEvent } from '../../domain/events/user-welcomed.event';
 import { Logger } from '@nestjs/common';
 
 @EventsHandler(UserWelcomedEvent)

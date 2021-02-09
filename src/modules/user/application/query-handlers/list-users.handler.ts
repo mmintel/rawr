@@ -1,10 +1,10 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../../domain/user.repository';
+import { UserRepository } from '../../domain/user.repository';
 import { User } from 'src/modules/user/domain/user.entity';
-import { ListUsersQuery } from './list-users.query';
+import { ListUsersQuery } from '../../domain/queries/list-users.query';
 
 @QueryHandler(ListUsersQuery)
-export class GetUserHandler implements IQueryHandler<ListUsersQuery> {
+export class ListUsersHandler implements IQueryHandler<ListUsersQuery> {
   constructor(private repository: UserRepository) {}
 
   async execute(): Promise<User[]> {

@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { UpdateUserCommand } from './update-user.command';
-import { UserRepository } from '../../../domain/user.repository';
+import { UpdateUserCommand } from '../../domain/commands/update-user.command';
+import { UserRepository } from '../../domain/user.repository';
 import { UserNotFoundException } from 'src/modules/user/domain/exceptions/user-not-found.exception';
 
 @CommandHandler(UpdateUserCommand)

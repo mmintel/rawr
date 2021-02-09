@@ -1,6 +1,6 @@
 import { EventPublisher, ICommandHandler, CommandHandler } from '@nestjs/cqrs';
-import { WelcomeUserCommand } from './welcome-user.command';
-import { UserRepository } from '../../../domain/user.repository';
+import { WelcomeUserCommand } from '../../domain/commands/welcome-user.command';
+import { UserRepository } from '../../domain/user.repository';
 
 @CommandHandler(WelcomeUserCommand)
 export class WelcomeUserHandler implements ICommandHandler<WelcomeUserCommand> {

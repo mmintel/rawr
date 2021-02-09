@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { DeleteUserCommand } from './delete-user.command';
-import { UserRepository } from '../../../domain/user.repository';
+import { DeleteUserCommand } from '../../domain/commands/delete-user.command';
+import { UserRepository } from '../../domain/user.repository';
 import { UserNotFoundException } from 'src/modules/user/domain/exceptions/user-not-found.exception';
 
 @CommandHandler(DeleteUserCommand)

@@ -1,11 +1,11 @@
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserDto } from '../../interface/dtos/create-user.dto';
 import { UpdateUserDto } from '../../interface/dtos/update-user.dto';
-import { CreateUserCommand } from '../commands/create-user/create-user.command';
-import { UpdateUserCommand } from '../commands/update-user/update-user.command';
-import { DeleteUserCommand } from '../commands/delete-user/delete-user.command';
-import { ListUsersQuery } from '../queries/list-users/list-users.query';
-import { GetUserQuery } from '../queries/get-user/get-user.query';
+import { CreateUserCommand } from '../../domain/commands/create-user.command';
+import { UpdateUserCommand } from '../../domain/commands/update-user.command';
+import { DeleteUserCommand } from '../../domain/commands/delete-user.command';
+import { ListUsersQuery } from '../../domain/queries/list-users.query';
+import { GetUserQuery } from '../../domain/queries/get-user.query';
 
 export class UserApplicationService {
   constructor(

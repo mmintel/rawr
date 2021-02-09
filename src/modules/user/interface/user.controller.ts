@@ -8,39 +8,47 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { UserApplicationService } from '../application/services/user.service';
+import { CreateUserCommand } from '../domain/commands/create-user.command';
+import { ListUsersQuery } from '../domain/queries/list-users.query';
+import { GetUserQuery } from '../domain/queries/get-user.query';
+import { UpdateUserCommand } from '../domain/commands/update-user.command';
+import { DeleteUserCommand } from '../domain/commands/delete-user.command';
 
 @Controller('users')
 @ApiTags('Users')
 export class UserController {
-  constructor(private readonly service: UserApplicationService) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @ApiOperation({ description: 'Create User' })
   @ApiResponse({ status: 200, description: 'Create User.' })
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.service.create(createUserDto);
+  async create(@Body() payload: CreateUserDto) {
+    await this.commandBus.execute(new CreateUserCommand(payload));
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  async findAll() {
+    return this.queryBus.execute(new ListUsersQuery());
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return this.queryBus.execute(new GetUserQuery(id));
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.service.update(id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    await this.commandBus.execute(new UpdateUserCommand(id, updateUserDto));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.service.remove(id);
+  async remove(@Param('id') id: string) {
+    await this.commandBus.execute(new DeleteUserCommand(id));
   }
 }
