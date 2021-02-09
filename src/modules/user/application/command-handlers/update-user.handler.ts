@@ -16,9 +16,9 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     if (!model) throw new UserNotFoundException();
 
-    // TODO how to update user with payload?
-
     const user = this.publisher.mergeObjectContext(model);
+
+    user.setData(payload);
 
     await this.repository.save(user);
 

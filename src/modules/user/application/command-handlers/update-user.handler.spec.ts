@@ -4,15 +4,14 @@ import { Test } from '@nestjs/testing';
 import { EventPublisher } from '@nestjs/cqrs';
 import { UserRepository } from '../../domain/user.repository';
 import { UserFactory } from '../../domain/users.factory';
-import { CreateUserHandler } from './create-user.handler';
+import { UpdateUserHandler } from './update-user.handler';
 import { User } from '../../domain/user.entity';
-import { CreateUserCommand } from '../../domain/commands/create-user.command';
+import { UpdateUserCommand } from '../../domain/commands/update-user.command';
 
-describe('CreateUserCommandHandler', () => {
+describe('UpdateUserCommandHandler', () => {
   let userRepository: UserRepository;
-  let userFactory: UserFactory;
   let eventPublisher: EventPublisher;
-  let createUserCommandHandler: CreateUserHandler;
+  let updateUserCommandHandler: UpdateUserHandler;
 
   beforeEach(async () => {
     const userFactoryProvider: Provider = {
@@ -32,46 +31,47 @@ describe('CreateUserCommandHandler', () => {
       userFactoryProvider,
       userRepositoryProvider,
       eventPublisherProvider,
-      CreateUserHandler,
+      UpdateUserHandler,
     ];
 
     const moduleMetadata: ModuleMetadata = { providers };
     const testModule = await Test.createTestingModule(moduleMetadata).compile();
 
     userRepository = testModule.get(UserRepository);
-    userFactory = testModule.get(UserFactory);
     eventPublisher = testModule.get(EventPublisher);
-    createUserCommandHandler = testModule.get(CreateUserHandler);
+    updateUserCommandHandler = testModule.get(UpdateUserHandler);
   });
 
   describe('execute', () => {
     it('should return Promise<void>', async () => {
-      const command = new CreateUserCommand({
-        email: 'foo@foo.de',
-        firstName: 'Foo',
-        lastName: 'Bar',
-        password: '1234',
-      });
+      const id = '123';
+      const data = { firstName: 'foo' };
+      const command = new UpdateUserCommand(id, data);
 
       const user = {} as User;
-      user.raiseCreateUser = jest.fn();
+      user.raiseUpdateUser = jest.fn();
+      user.setData = jest.fn();
       user.commit = jest.fn().mockReturnValue(undefined);
 
-      userFactory.create = jest.fn().mockReturnValue(user);
+      userRepository.findOneById = jest.fn().mockResolvedValue(user);
       userRepository.save = jest.fn().mockResolvedValue(undefined);
       eventPublisher.mergeObjectContext = jest.fn().mockReturnValue(user);
 
-      expect(userFactory.create).toHaveBeenCalledTimes(0);
       expect(userRepository.save).toHaveBeenCalledTimes(0);
-      expect(user.raiseCreateUser).toHaveBeenCalledTimes(0);
+      expect(userRepository.findOneById).toHaveBeenCalledTimes(0);
+      expect(user.raiseUpdateUser).toBeCalledTimes(0);
+      expect(user.setData).toBeCalledTimes(0);
 
-      await expect(createUserCommandHandler.execute(command)).resolves.toEqual(
+      await expect(updateUserCommandHandler.execute(command)).resolves.toEqual(
         undefined,
       );
 
-      expect(userFactory.create).toHaveBeenCalledTimes(1);
       expect(userRepository.save).toHaveBeenCalledTimes(1);
-      expect(user.raiseCreateUser).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneById).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneById).toHaveBeenCalledWith(id);
+      expect(user.raiseUpdateUser).toBeCalledTimes(1);
+      expect(user.setData).toBeCalledTimes(1);
+      expect(user.setData).toBeCalledWith(data);
     });
   });
 });
