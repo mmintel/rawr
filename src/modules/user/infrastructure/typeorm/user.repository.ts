@@ -10,32 +10,35 @@ export class UserRepositoryTypeORM extends UserRepository {
 
   constructor(private userMapper: UserMapper<UserEntityTypeORM>) {
     super();
-    this.repository = getRepository<UserEntityTypeORM>(UserEntityTypeORM);
+  }
+
+  private getRepository() {
+    return getRepository<UserEntityTypeORM>(UserEntityTypeORM);
   }
 
   async findAll() {
-    const entities = await this.repository.find();
+    const entities = await this.getRepository().find();
     return entities.map((entity) => this.userMapper.toDomain(entity));
   }
 
   async findOneById(id) {
-    const entity = await this.repository.findOne(id);
+    const entity = await this.getRepository().findOne(id);
     return this.userMapper.toDomain(entity);
   }
 
   async save(user: User) {
     const persistenceEntity = this.userMapper.toPersistence(user);
-    await this.repository.save(persistenceEntity);
+    await this.getRepository().save(persistenceEntity);
   }
 
   async saveAll(users: User[]) {
     const persistenceEntities = users.map((user) =>
       this.userMapper.toPersistence(user),
     );
-    await this.repository.save(persistenceEntities);
+    await this.getRepository().save(persistenceEntities);
   }
 
   async delete(id: string) {
-    await this.repository.delete(id);
+    await this.getRepository().delete(id);
   }
 }
