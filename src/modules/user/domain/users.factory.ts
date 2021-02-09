@@ -1,5 +1,5 @@
 import { Factory } from 'src/core/factory';
-import { IdGenerator } from 'src/shared/ports/id-generator';
+import { IdGenerator } from 'src/utils/ports/id-generator';
 import { UserPassword } from './user-password.value-object';
 import { AnemicUser, User } from './user.entity';
 

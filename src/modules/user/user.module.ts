@@ -10,9 +10,11 @@ import { UserMapperTypeORM } from './infrastructure/typeorm/user.mapper';
 import { UserApplicationService } from './application/services/user.service';
 import { UserRepository } from './domain/user.repository';
 import { UserMapper } from './domain/user.mapper';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntityTypeORM } from './infrastructure/typeorm/user.entity';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, TypeOrmModule.forFeature([UserEntityTypeORM])],
   controllers: [UserController],
   providers: [
     {
