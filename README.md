@@ -1,31 +1,52 @@
 ## Installation
 
 ```bash
-$ npm install
+$ yarn
 ```
 
 ## Running the app
+### Docker
+```bash
+# start development
+$ yarn start:docker
 
+# start detached
+$ docker-compose up -d
+
+# rebuild, e.g. after new packages
+$ docker-compose up --build -V
+
+# remove postgres data
+$ docker-compose exec postgres bash rm -rf /var/lib/postgresql/data
+```
+
+### Manually
 ```bash
 # development
-$ npm run start
+$ yarn run start
 
 # watch mode
-$ npm run start:dev
+$ yarn run start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn run start:prod
 ```
 
 ## Test
+### Docker
+```bash
+# run e2e tests
+$ yarn test:e2e:docker
+```
 
+### Manually
 ```bash
 # unit tests
-$ npm run test
+$ yarn run test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn run test:cov
 ```
