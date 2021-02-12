@@ -50,7 +50,7 @@ describe('UpdateUserCommandHandler', () => {
 
       const user = {} as User;
       user.raiseUpdateUser = jest.fn();
-      user.setData = jest.fn();
+      user.update = jest.fn();
       user.commit = jest.fn().mockReturnValue(undefined);
 
       userRepository.findOneById = jest.fn().mockResolvedValue(user);
@@ -60,7 +60,7 @@ describe('UpdateUserCommandHandler', () => {
       expect(userRepository.save).toHaveBeenCalledTimes(0);
       expect(userRepository.findOneById).toHaveBeenCalledTimes(0);
       expect(user.raiseUpdateUser).toBeCalledTimes(0);
-      expect(user.setData).toBeCalledTimes(0);
+      expect(user.update).toBeCalledTimes(0);
 
       await expect(updateUserCommandHandler.execute(command)).resolves.toEqual(
         undefined,
@@ -70,8 +70,8 @@ describe('UpdateUserCommandHandler', () => {
       expect(userRepository.findOneById).toHaveBeenCalledTimes(1);
       expect(userRepository.findOneById).toHaveBeenCalledWith(id);
       expect(user.raiseUpdateUser).toBeCalledTimes(1);
-      expect(user.setData).toBeCalledTimes(1);
-      expect(user.setData).toBeCalledWith(data);
+      expect(user.update).toBeCalledTimes(1);
+      expect(user.update).toBeCalledWith(data);
     });
   });
 });

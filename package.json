@@ -20,7 +20,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "NODE_ENV=test jest --config ./test/jest-e2e.json",
-    "test:e2e:docker": "docker-compose -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from main"
+    "test:e2e:docker": "docker-compose -f docker-compose.e2e.yml up --abort-on-container-exit --exit-code-from main",
+    "test:e2e:docker:clear": "docker-compose -f docker-compose.e2e.yml up -d && docker-compose -f docker-compose.e2e.yml exec db bash rm -rf /var/lib/postgresql/data && docker-compose down"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
@@ -30,15 +31,19 @@
     "@nestjs/platform-express": "^7.5.1",
     "@nestjs/swagger": "^4.7.12",
     "@nestjs/typeorm": "^7.1.5",
+    "@types/lodash": "^4.14.168",
+    "bcrypt": "^5.0.0",
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
     "cli-color": "^2.0.0",
     "helmet": "^4.4.1",
+    "lodash": "^4.17.20",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "shallow-equal-object": "^1.1.1",
+    "ts-mixer": "^5.4.0",
     "typeorm": "^0.2.30"
   },
   "devDependencies": {
@@ -70,7 +75,9 @@
       "ts"
     ],
     "rootDir": "./",
-    "modulePaths": ["<rootDir>"],
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

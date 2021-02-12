@@ -17,7 +17,7 @@ $ docker-compose up -d
 $ docker-compose up --build -V
 
 # remove postgres data
-$ docker-compose exec postgres bash rm -rf /var/lib/postgresql/data
+$ docker-compose exec db bash rm -rf /var/lib/postgresql/data
 ```
 
 ### Manually
@@ -37,6 +37,9 @@ $ yarn run start:prod
 ```bash
 # run e2e tests
 $ yarn test:e2e:docker
+
+# clear test db
+$ yarn test:e2e:docker:clear
 ```
 
 ### Manually

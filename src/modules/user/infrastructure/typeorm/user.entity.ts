@@ -1,19 +1,27 @@
-import { User } from 'src/modules/user/domain/user.entity';
 import {
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
+  PrimaryColumn,
 } from 'typeorm';
+
+interface UserProps {
+  id?: string;
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
 
 @Entity({ name: 'users' })
 export class UserEntityTypeORM {
-  constructor(user: User) {
-    Object.assign(this, user);
+  constructor(props: UserProps) {
+    Object.assign(this, props);
   }
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Column()
@@ -30,11 +38,6 @@ export class UserEntityTypeORM {
 
   @Column()
   password: string;
-
-  @Column({
-    default: false,
-  })
-  isVerified: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

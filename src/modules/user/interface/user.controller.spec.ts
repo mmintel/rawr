@@ -33,6 +33,7 @@ describe('UserController', () => {
       const user: CreateUserDto = {
         firstName: 'Foo',
         lastName: 'Bar',
+        username: 'FooBar',
         email: 'foo@bar.baz',
         password: '1234',
       };
