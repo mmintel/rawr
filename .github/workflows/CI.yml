@@ -2,21 +2,21 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Test
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: test # will run `yarn test` command
+      - name: Unit Test
+        run: docker-compose build
+  unit:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Unit Test
+        run: docker-compose run main yarn test
   e2e:
-    name: "End to end"
+    name: E2E Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
