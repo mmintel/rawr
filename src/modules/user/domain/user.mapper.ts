@@ -1,15 +1,11 @@
 import { AnemicUser, User } from 'src/modules/user/domain/user.entity';
 import { UserFactory } from 'src/modules/user/domain/users.factory';
+import { UserDTO } from './user.dto';
 
 interface Mapper<Domain, Anemic, Persistence> {
   toAnemic(domain: Domain): Anemic;
   toDomain(raw: any): Domain;
   toPersistence(domain: Domain): Persistence;
-}
-
-interface UserDTO extends Omit<AnemicUser, 'password' | 'id'> {
-  id: string;
-  password?: never;
 }
 
 export abstract class UserMapper<Entity>

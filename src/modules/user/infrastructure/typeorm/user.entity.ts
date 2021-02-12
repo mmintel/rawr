@@ -5,46 +5,36 @@ import {
   Entity,
   PrimaryColumn,
 } from 'typeorm';
-
-interface UserProps {
-  id?: string;
-  username: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
+import { AnemicUser } from '../../domain/user.entity';
+import PasswordEntityTypeORM from './password.entity';
 
 @Entity({ name: 'users' })
-export class UserEntityTypeORM {
-  constructor(props: UserProps) {
+export class UserEntityTypeORM implements AnemicUser {
+  constructor(props: AnemicUser) {
     Object.assign(this, props);
   }
 
   @PrimaryColumn()
-  id: string;
+  id!: string;
 
   @Column()
-  username: string;
+  username!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @Column()
-  lastName: string;
-
-  @Column()
-  password: string;
+  lastName!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
-  //@OneToMany(() => Recipe, (recipe) => recipe.user)
-  //public recipes?: Recipe[];
+  @Column(() => PasswordEntityTypeORM)
+  password!: PasswordEntityTypeORM;
 }
