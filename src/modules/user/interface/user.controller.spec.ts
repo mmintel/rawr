@@ -8,6 +8,14 @@ import { GetUserQuery } from '../domain/queries/get-user.query';
 import { UpdateUserCommand } from '../domain/commands/update-user.command';
 import { DeleteUserCommand } from '../domain/commands/delete-user.command';
 
+const mockQueryBus = {
+  execute: jest.fn(),
+};
+
+const mockCommandBus = {
+  execute: jest.fn(),
+};
+
 describe('UserController', () => {
   let commandBus: CommandBus;
   let queryBus: QueryBus;
@@ -16,16 +24,25 @@ describe('UserController', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [CommandBus, QueryBus],
+      providers: [
+        {
+          provide: CommandBus,
+          useValue: mockCommandBus,
+        },
+        {
+          provide: QueryBus,
+          useValue: mockQueryBus,
+        },
+      ],
     }).compile();
 
     commandBus = moduleRef.get<CommandBus>(CommandBus);
-    commandBus.execute = jest.fn();
-
     queryBus = moduleRef.get<QueryBus>(QueryBus);
-    queryBus.execute = jest.fn();
-
     userController = moduleRef.get<UserController>(UserController);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('create user', () => {
@@ -33,6 +50,7 @@ describe('UserController', () => {
       const user: CreateUserDto = {
         firstName: 'Foo',
         lastName: 'Bar',
+        username: 'FooBar',
         email: 'foo@bar.baz',
         password: '1234',
       };
@@ -75,12 +93,12 @@ describe('UserController', () => {
     it('should execute the UpdateUserCommand', async () => {
       const id = '2112asdjni124';
       const payload = { firstName: 'foo' };
-      expect(queryBus.execute).toHaveBeenCalledTimes(0);
+      expect(commandBus.execute).toHaveBeenCalledTimes(0);
 
-      await userController.findOne(id);
+      await userController.update(id, payload);
 
-      expect(queryBus.execute).toHaveBeenCalledTimes(1);
-      expect(queryBus.execute).toHaveBeenCalledWith(
+      expect(commandBus.execute).toHaveBeenCalledTimes(1);
+      expect(commandBus.execute).toHaveBeenCalledWith(
         new UpdateUserCommand(id, payload),
       );
     });
@@ -89,12 +107,14 @@ describe('UserController', () => {
   describe('delete', () => {
     it('should execute the DeleteUserCommand', async () => {
       const id = '2112asdjni124';
-      expect(queryBus.execute).toHaveBeenCalledTimes(0);
+      expect(commandBus.execute).toHaveBeenCalledTimes(0);
 
-      await userController.findOne(id);
+      await userController.remove(id);
 
-      expect(queryBus.execute).toHaveBeenCalledTimes(1);
-      expect(queryBus.execute).toHaveBeenCalledWith(new DeleteUserCommand(id));
+      expect(commandBus.execute).toHaveBeenCalledTimes(1);
+      expect(commandBus.execute).toHaveBeenCalledWith(
+        new DeleteUserCommand(id),
+      );
     });
   });
 });

@@ -6,6 +6,7 @@ import { UserEntityTypeORM } from './user.entity';
 @Injectable()
 export class UserMapperTypeORM extends UserMapper<UserEntityTypeORM> {
   toPersistence(user: User): UserEntityTypeORM {
-    return new UserEntityTypeORM(user);
+    // TODO should password be converted to string or should TypeOrm entity make use of anemic password structure?
+    return new UserEntityTypeORM(user.toAnemic());
   }
 }

@@ -1,13 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserQuery } from '../../domain/queries/get-user.query';
 import { UserRepository } from '../../domain/user.repository';
-import { User } from 'src/modules/user/domain/user.entity';
+import { UserMapper } from '../../domain/user.mapper';
+import { UserDTO } from '../../domain/user.dto';
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IQueryHandler<GetUserQuery> {
-  constructor(private repository: UserRepository) {}
+  constructor(private repository: UserRepository, private mapper: UserMapper) {}
 
-  async execute(query: GetUserQuery): Promise<User> {
-    return this.repository.findOneById(query.id);
+  async execute(query: GetUserQuery): Promise<UserDTO> {
+    const user = await this.repository.findOneById(query.id);
+    return this.mapper.toDTO(user);
   }
 }

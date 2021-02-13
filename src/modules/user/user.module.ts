@@ -23,7 +23,8 @@ import { UserEntityTypeORM } from './infrastructure/typeorm/user.entity';
     },
     {
       provide: UserMapper,
-      useClass: UserMapperTypeORM,
+      // TODO normal injection doesn't work, find out why
+      useValue: new UserMapperTypeORM(new UserFactory()),
     },
     UserFactory,
     UserController,

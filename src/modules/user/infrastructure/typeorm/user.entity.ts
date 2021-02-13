@@ -1,47 +1,49 @@
-import { User } from 'src/modules/user/domain/user.entity';
 import {
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
   Entity,
+  PrimaryColumn,
 } from 'typeorm';
+import { AnemicUser } from '../../domain/user.entity';
+import PasswordEntityTypeORM from './password.entity';
 
 @Entity({ name: 'users' })
 export class UserEntityTypeORM {
-  constructor(user: User) {
-    Object.assign(this, user);
+  constructor(props: AnemicUser) {
+    if (props) {
+      this.id = props.id.value;
+      this.username = props.username;
+      this.email = props.email;
+      this.firstName = props.firstName;
+      this.lastName = props.lastName;
+      this.createdAt = props.createdAt;
+      this.updatedAt = props.updatedAt;
+      this.password = props.password;
+    }
   }
 
-  @PrimaryGeneratedColumn()
-  id: string;
+  @PrimaryColumn()
+  id!: string;
 
   @Column()
-  username: string;
+  username!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @Column()
-  lastName: string;
-
-  @Column()
-  password: string;
-
-  @Column({
-    default: false,
-  })
-  isVerified: boolean;
+  lastName!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
-  //@OneToMany(() => Recipe, (recipe) => recipe.user)
-  //public recipes?: Recipe[];
+  @Column(() => PasswordEntityTypeORM)
+  password!: PasswordEntityTypeORM;
 }

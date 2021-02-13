@@ -50,6 +50,7 @@ describe('CreateUserCommandHandler', () => {
         email: 'foo@foo.de',
         firstName: 'Foo',
         lastName: 'Bar',
+        username: 'FooBar',
         password: '1234',
       });
 

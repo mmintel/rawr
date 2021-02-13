@@ -1,17 +1,62 @@
 import { ValueObject } from 'src/core/value-object';
+import * as bcrypt from 'bcrypt';
 
 interface UserPasswordProps {
-  value: string;
-  hashed?: boolean;
+  encrypted: string;
+  salt?: string;
+  createdAt?: Date;
+  comparedAt?: Date;
+}
+
+export interface AnemicUserPassword {
+  readonly encrypted: string;
+  readonly salt: string;
+  readonly createdAt: Date;
+  readonly comparedAt: Date;
 }
 
 export class UserPassword extends ValueObject<UserPasswordProps> {
   private constructor(props: UserPasswordProps) {
     super(props);
+
+    if (!props.createdAt) {
+      this.props.createdAt = new Date();
+    }
+
+    if (!props.comparedAt) {
+      this.props.comparedAt = new Date();
+    }
+
+    if (!props.salt) {
+      this.props.salt = this.generateSalt();
+      this.props.encrypted = this.hashPassword(
+        this.props.encrypted,
+        this.props.salt,
+      );
+    }
   }
 
-  get value() {
-    return this.props.value;
+  private hashPassword(password: string, salt: string) {
+    return bcrypt.hashSync(password, salt);
+  }
+
+  private generateSalt() {
+    return bcrypt.genSaltSync();
+  }
+
+  public compare(password: string): boolean {
+    const result = bcrypt.compareSync(password, this.props.encrypted);
+    this.props.comparedAt = new Date();
+    return result;
+  }
+
+  public toAnemic(): AnemicUserPassword {
+    return {
+      encrypted: this.props.encrypted,
+      salt: this.props.salt,
+      createdAt: this.props.createdAt,
+      comparedAt: this.props.comparedAt,
+    };
   }
 
   static create(props: UserPasswordProps): UserPassword {
