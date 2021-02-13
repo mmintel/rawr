@@ -1,5 +1,5 @@
 import { ValueObject } from 'src/core/value-object';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 interface UserPasswordProps {
   encrypted: string;
@@ -23,6 +23,10 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
       this.props.createdAt = new Date();
     }
 
+    if (!props.comparedAt) {
+      this.props.comparedAt = new Date();
+    }
+
     if (!props.salt) {
       this.props.salt = this.generateSalt();
       this.props.encrypted = this.hashPassword(
@@ -32,12 +36,12 @@ export class UserPassword extends ValueObject<UserPasswordProps> {
     }
   }
 
-  private hashPassword(password: string, salt: string): string {
-    return bcrypt.hashPassword(password, salt);
+  private hashPassword(password: string, salt: string) {
+    return bcrypt.hashSync(password, salt);
   }
 
   private generateSalt() {
-    return bcrypt.generateSalt();
+    return bcrypt.genSaltSync();
   }
 
   public compare(password: string): boolean {

@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'src/core/aggregate-root';
-import { UniqueId } from 'src/core/unique-entity-id';
+import { AnemicUniqueId, UniqueId } from 'src/core/unique-entity-id';
 import { UserCreatedEvent } from './events/user-created.event';
 import { UserDeletedEvent } from './events/user-deleted.event';
 import { UserUpdatedEvent } from './events/user-updated.event';
@@ -21,7 +21,7 @@ interface UserProps extends UserData {
 }
 
 export interface AnemicUser extends Omit<UserProps, 'id' | 'password'> {
-  id: string;
+  id: AnemicUniqueId;
   password: AnemicUserPassword;
 }
 
@@ -60,7 +60,7 @@ export class User extends AggregateRoot<UserProps> {
 
   toAnemic(): AnemicUser {
     return {
-      id: this.props.id.toString(),
+      id: this.props.id.toAnemic(),
       firstName: this.props.firstName,
       lastName: this.props.lastName,
       username: this.props.username,

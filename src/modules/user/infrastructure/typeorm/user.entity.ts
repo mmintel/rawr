@@ -9,9 +9,18 @@ import { AnemicUser } from '../../domain/user.entity';
 import PasswordEntityTypeORM from './password.entity';
 
 @Entity({ name: 'users' })
-export class UserEntityTypeORM implements AnemicUser {
+export class UserEntityTypeORM {
   constructor(props: AnemicUser) {
-    Object.assign(this, props);
+    if (props) {
+      this.id = props.id.value;
+      this.username = props.username;
+      this.email = props.email;
+      this.firstName = props.firstName;
+      this.lastName = props.lastName;
+      this.createdAt = props.createdAt;
+      this.updatedAt = props.updatedAt;
+      this.password = props.password;
+    }
   }
 
   @PrimaryColumn()

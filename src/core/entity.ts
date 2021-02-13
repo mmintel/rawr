@@ -1,11 +1,10 @@
 import { UniqueId } from './unique-entity-id';
 
-interface EntityProps {
+export interface EntityProps {
   id?: UniqueId;
 }
 
 export class Entity<Props extends EntityProps> {
-  protected _id: UniqueId;
   protected props: Props;
 
   constructor(props: Props) {
@@ -37,17 +36,6 @@ export class Entity<Props extends EntityProps> {
       return false;
     }
 
-    return this._id.equals(object._id);
-  }
-}
-
-export class MixableEntity<Props extends EntityProps> extends Entity<Props> {
-  // ts-mixer requires init function to replace constructor
-  protected init(props: Props) {
-    this.props = props;
-
-    if (!props.id) {
-      this.props.id = UniqueId.create();
-    }
+    return this.id.equals(object.id);
   }
 }
