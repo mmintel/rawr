@@ -37,23 +37,33 @@ describe('AppModule (e2e)', () => {
   });
 
   describe('UsersModule', () => {
-    let mockUsers = [];
+    let mockUsers: UserEntityTypeORM[] = [];
 
     beforeEach(async () => {
       mockUsers = [
-        {
-          id: '213123',
+        new UserEntityTypeORM({
+          id: {
+            value: '213123',
+          },
           firstName: 'foo',
           lastName: 'bar',
           username: 'foobar',
           email: 'foo@bar.baz',
-          password: '1234',
-        },
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          password: {
+            encrypted: '213123',
+            salt: '21312',
+            createdAt: new Date(),
+            comparedAt: new Date(),
+          },
+        }),
       ];
       try {
         await connection.getRepository(UserEntityTypeORM).save(mockUsers);
       } catch (e) {
         console.error(e);
+        throw e;
       }
     });
 
@@ -61,7 +71,9 @@ describe('AppModule (e2e)', () => {
       return request(app.getHttpServer())
         .get('/users')
         .expect(200)
-        .expect(mockUsers);
+        .then((res) => {
+          expect(res.body.length).toEqual(mockUsers.length);
+        });
     });
   });
 });
