@@ -6,6 +6,7 @@ import { AppModule } from '../src/modules/app/app.module';
 import { Connection } from 'typeorm';
 import { UserEntityTypeORM } from 'src/modules/user/infrastructure/typeorm/user.entity';
 import { CreateUserDto } from 'src/modules/user/interface/dtos/create-user.dto';
+import { UpdateUserDto } from 'src/modules/user/interface/dtos/update-user.dto';
 
 describe('AppModule (e2e)', () => {
   let app: INestApplication;
@@ -101,6 +102,35 @@ describe('AppModule (e2e)', () => {
         .expect(200)
         .then((res) => {
           expect(res.body.id).toEqual(id);
+        });
+    });
+
+    it('/users/:id (PUT)', async () => {
+      const payload: UpdateUserDto = {
+        firstName: 'foofoo',
+      };
+
+      await request(app.getHttpServer())
+        .put(`/users/${id}`)
+        .send(payload)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .get(`/users/${id}`)
+        .expect(200)
+        .then((res) => {
+          res.body.firstName = payload.firstName;
+        });
+    });
+
+    it('/users/:id (DELETE)', async () => {
+      await request(app.getHttpServer()).delete(`/users/${id}`).expect(200);
+
+      await request(app.getHttpServer())
+        .get(`/users`)
+        .expect(200)
+        .then((res) => {
+          res.body = [];
         });
     });
   });
