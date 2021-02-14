@@ -11,7 +11,7 @@ export class UserRepositoryMemory extends UserRepository {
   }
 
   async findOneById(id: string): Promise<User> {
-    const user = this.users.find((user) => user.id.value === id);
+    const user = this.users.find((user) => user.id === id);
     return this.userMapper.toDomain(user);
   }
 
@@ -31,6 +31,6 @@ export class UserRepositoryMemory extends UserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.users = this.users.filter((user) => id !== user.id.value);
+    this.users = this.users.filter((user) => id !== user.id);
   }
 }

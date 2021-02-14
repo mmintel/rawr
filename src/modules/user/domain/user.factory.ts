@@ -32,7 +32,7 @@ export class UserFactory implements Factory<User, AnemicUser> {
 
   reconstitute(anemic: AnemicUser): User {
     return User.create({
-      id: UniqueId.create({ value: anemic.id.value }),
+      id: UniqueId.create({ value: anemic.id }),
       email: anemic.email,
       firstName: anemic.firstName,
       lastName: anemic.lastName,

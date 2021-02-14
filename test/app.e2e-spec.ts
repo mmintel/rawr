@@ -5,6 +5,7 @@ import { TestLogger } from './testlogger';
 import { AppModule } from '../src/modules/app/app.module';
 import { Connection } from 'typeorm';
 import { UserEntityTypeORM } from 'src/modules/user/infrastructure/typeorm/user.entity';
+import { CreateUserDto } from 'src/modules/user/interface/dtos/create-user.dto';
 
 describe('AppModule (e2e)', () => {
   let app: INestApplication;
@@ -37,14 +38,13 @@ describe('AppModule (e2e)', () => {
   });
 
   describe('UsersModule', () => {
+    const id = '213dosad213';
     let mockUsers: UserEntityTypeORM[] = [];
 
     beforeEach(async () => {
       mockUsers = [
         new UserEntityTypeORM({
-          id: {
-            value: '213123',
-          },
+          id,
           firstName: 'foo',
           lastName: 'bar',
           username: 'foobar',
@@ -73,6 +73,34 @@ describe('AppModule (e2e)', () => {
         .expect(200)
         .then((res) => {
           expect(res.body.length).toEqual(mockUsers.length);
+        });
+    });
+
+    it('/users (POST)', async () => {
+      const payload: CreateUserDto = {
+        firstName: 'foo',
+        lastName: 'bar',
+        email: 'foo@bar',
+        username: 'fooBar',
+        password: '1234',
+      };
+      await request(app.getHttpServer())
+        .post('/users')
+        .send(payload)
+        .expect(201);
+      await request(app.getHttpServer())
+        .get('/users')
+        .then((res) => {
+          expect(res.body.length).toEqual(mockUsers.length + 1);
+        });
+    });
+
+    it('/users/:id (GET)', () => {
+      return request(app.getHttpServer())
+        .get(`/users/${id}`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body.id).toEqual(id);
         });
     });
   });

@@ -5,7 +5,7 @@ import { CommandHandlers } from './application/command-handlers';
 import { EventHandlers } from './application/event-handlers';
 import { QueryHandlers } from './application/query-handlers';
 import { UserRepositoryTypeORM } from './infrastructure/typeorm/user.repository';
-import { UserFactory } from './domain/users.factory';
+import { UserFactory } from './domain/user.factory';
 import { UserMapperTypeORM } from './infrastructure/typeorm/user.mapper';
 import { UserApplicationService } from './application/services/user.service';
 import { UserRepository } from './domain/user.repository';

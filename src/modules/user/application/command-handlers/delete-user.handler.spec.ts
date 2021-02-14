@@ -3,7 +3,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
 import { EventPublisher } from '@nestjs/cqrs';
 import { UserRepository } from '../../domain/user.repository';
-import { UserFactory } from '../../domain/users.factory';
+import { UserFactory } from '../../domain/user.factory';
 import { DeleteUserHandler } from './delete-user.handler';
 import { User } from '../../domain/user.entity';
 import { DeleteUserCommand } from '../../domain/commands/delete-user.command';
