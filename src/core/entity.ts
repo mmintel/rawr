@@ -1,4 +1,4 @@
-import { UniqueId } from './unique-entity-id';
+import { UniqueId } from './unique-id.value-object';
 
 export interface EntityProps {
   id?: UniqueId;

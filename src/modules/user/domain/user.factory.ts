@@ -1,5 +1,5 @@
 import { Factory } from 'src/core/factory';
-import { UniqueId } from 'src/core/unique-entity-id';
+import { UniqueId } from 'src/core/unique-id.value-object';
 import { UserPassword } from './user-password.value-object';
 import { AnemicUser, User } from './user.entity';
 
@@ -32,17 +32,14 @@ export class UserFactory implements Factory<User, AnemicUser> {
 
   reconstitute(anemic: AnemicUser): User {
     return User.create({
-      id: UniqueId.create({ value: anemic.id }),
+      id: UniqueId.create(anemic.id),
       email: anemic.email,
       firstName: anemic.firstName,
       lastName: anemic.lastName,
       username: anemic.username,
       createdAt: anemic.createdAt,
       updatedAt: anemic.updatedAt,
-      password: UserPassword.create({
-        encrypted: anemic.password.encrypted,
-        salt: anemic.password.salt,
-      }),
+      password: UserPassword.create(anemic.password),
     });
   }
 }

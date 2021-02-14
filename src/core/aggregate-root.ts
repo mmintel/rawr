@@ -1,7 +1,7 @@
 import { AggregateRoot as AbstractCqrsAggregateRoot } from '@nestjs/cqrs';
 import { mix, settings } from 'ts-mixer';
 import { Entity, EntityProps } from './entity';
-import { UniqueId } from './unique-entity-id';
+import { UniqueId } from './unique-id.value-object';
 
 settings.initFunction = 'init';
 

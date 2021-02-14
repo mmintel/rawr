@@ -5,11 +5,17 @@ interface UniqueIdProps {
   value: string;
 }
 
-export type AnemicUniqueId = string;
+export type AnemicUniqueId = {
+  value: string;
+};
 
 export class UniqueId extends ValueObject<UniqueIdProps> {
-  public toAnemic(): AnemicUniqueId {
+  get value(): string {
     return this.props.value;
+  }
+
+  public toAnemic(): AnemicUniqueId {
+    return this.props;
   }
 
   static create(props?: UniqueIdProps): UniqueId {

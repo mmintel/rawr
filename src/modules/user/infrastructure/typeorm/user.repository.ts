@@ -16,12 +16,12 @@ export class UserRepositoryTypeORM extends UserRepository {
 
   async findAll() {
     const entities = await this.getRepository().find();
-    return entities.map((entity) => this.userMapper.toDomain(entity));
+    return entities.map((entity) => this.userMapper.fromPersistence(entity));
   }
 
   async findOneById(id) {
     const entity = await this.getRepository().findOne(id);
-    return this.userMapper.toDomain(entity);
+    return this.userMapper.fromPersistence(entity);
   }
 
   async save(user: User) {

@@ -1,12 +1,7 @@
 import { AnemicUser, User } from 'src/modules/user/domain/user.entity';
 import { UserFactory } from 'src/modules/user/domain/user.factory';
 import { UserDTO } from './user.dto';
-
-interface Mapper<Domain, Anemic, Persistence = any> {
-  toAnemic(domain: Domain): Anemic;
-  toDomain(raw: any): Domain;
-  toPersistence(domain: Domain): Persistence;
-}
+import { Mapper } from 'src/core/mapper';
 
 export abstract class UserMapper<Persistence = any>
   implements Mapper<User, AnemicUser, Persistence> {
@@ -14,8 +9,11 @@ export abstract class UserMapper<Persistence = any>
 
   toDTO(user: User): UserDTO {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, createdAt, updatedAt, ...dto } = this.toAnemic(user);
-    return dto;
+    const { id, password, createdAt, updatedAt, ...dto } = this.toAnemic(user);
+    return {
+      ...dto,
+      id: id.value,
+    };
   }
 
   toAnemic(user: User): AnemicUser {
@@ -27,4 +25,5 @@ export abstract class UserMapper<Persistence = any>
   }
 
   abstract toPersistence(user: User): Persistence;
+  abstract fromPersistence(user: Persistence): User;
 }

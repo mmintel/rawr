@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'src/core/aggregate-root';
-import { AnemicUniqueId, UniqueId } from 'src/core/unique-entity-id';
+import { AnemicUniqueId, UniqueId } from 'src/core/unique-id.value-object';
 import { UserCreatedEvent } from './events/user-created.event';
 import { UserDeletedEvent } from './events/user-deleted.event';
 import { UserUpdatedEvent } from './events/user-updated.event';
